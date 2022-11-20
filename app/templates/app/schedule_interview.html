@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1 align="center">Create an Interview Schedule</h1>
+        <form action="{% url 'create_slot' %}"
+            enctype="multipart/form-data"
+            method="post">
+            {% csrf_token %}
+
+            <fieldset>
+                <legend>Scheduling an interview</legend>
+                <label for="student">Choose Student</label>
+
+
+                <select id="student" name="student">
+                    <option value="none" selected disabled hidden>Select Student</option>
+                    {% for stu in students %}
+                    <option value="{{stu.id}}">{{stu.name}}&nbsp;({{stu.id}})</option>
+                    {% endfor %}
+                </select>
+
+                <br><br>
+
+                <label for="interviewer">Choose interviewer</label>
+                <select id="interviewer" name="interviewer">
+                    <option value="none" selected disabled hidden>Select
+                        interviewer</option>
+                    {% for inter in interviewers %}
+                    <option value="{{inter.id}}">{{inter.name}}&nbsp;({{inter.id}})</option>
+                    {% endfor %}
+                </select>
+
+                <br><br>
+
+                <label for="start_time">Choose start time</label>
+                <input id="start_time" type="time"
+                    name="start_time">
+                <br><br>
+
+                <label for="end_time">Choose end time</label>
+                <input id="end_time" type="time"
+                    name="end_time">
+                <br><br>
+
+
+                <input type="Submit" value="Confirm an interview">
+                <br><br>
+
+            </fieldset>
+        </form>
+    </body>
+</html>
