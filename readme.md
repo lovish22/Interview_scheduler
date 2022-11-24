@@ -11,7 +11,6 @@ procedure:
 
 pending tasks:
 1. Yet to work on editing interviews.
-2. Little error on case when 2 interviews of either an interviewer or student scheduled at same time.
 
 
 

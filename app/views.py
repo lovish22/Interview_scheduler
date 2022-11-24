@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from .models import Student, Interviewer, Interview
 from django.urls import reverse
@@ -43,44 +43,50 @@ def create_slot(request):
     st_time = time_float(start_time)
     ed_time = time_float(end_time)
 
-    arr1 = Interview.objects.get(student=student)
-    arr2 = Interview.objects.get(interviewer=interviewer)
+    arr1 = Interview.objects.filter(student=student)
+    arr2 = Interview.objects.filter(interviewer=interviewer)
 
     for i in arr1:
-        res = i.start_time.hour
+        res = str(i.start_time.hour)
         res += ":"
-        res += i.start_time.min
+        res += str(i.start_time.minute)
         beg_time = time_float(res)
 
-        res = i.end_time.hour
+        res = str(i.end_time.hour)
         res += ":"
-        res += i.end_time.min
+        res += str(i.end_time.minute)
         fin_time = time_float(res)
 
         if st_time > fin_time or ed_time < beg_time:
             continue
         else:
+            messages.error(
+                request, "Student is busy at this time.Please provide another slot."
+            )
             return HttpResponseRedirect(reverse("schedule_interview"))
 
     for i in arr2:
-        res = i.start_time.hour
+        res = str(i.start_time.hour)
         res += ":"
-        res += i.start_time.min
+        res += str(i.start_time.minute)
         beg_time = time_float(res)
 
-        res = i.end_time.hour
+        res = str(i.end_time.hour)
         res += ":"
-        res += i.end_time.min
+        res += str(i.end_time.minute)
         fin_time = time_float(res)
 
         if st_time > fin_time or ed_time < beg_time:
             continue
         else:
+            messages.error(
+                request, "Interviewer is busy at this time.Please provide another slot."
+            )
             return HttpResponseRedirect(reverse("schedule_interview"))
 
     recent_creation = Interview()
-    recent_creation.student = student
-    recent_creation.interviewer = interviewer
+    recent_creation.student = get_object_or_404(Student, pk=student)
+    recent_creation.interviewer = get_object_or_404(Interviewer, pk=interviewer)
     recent_creation.start_time = start_time
     recent_creation.end_time = end_time
 

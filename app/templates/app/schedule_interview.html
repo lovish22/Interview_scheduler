@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
     <body>
+
+        <!-- Alert message for interview cant be scheduled because ether interviewer or student is busy. -->
+        {% for message in messages %}
+
+        <div class="alert alert-success">
+            <a class="close" href="#" data-dismiss="alert">×</a>
+            {{ message }}
+        </div>
+        {% endfor %}
+
         <h1 align="center">Create an Interview Schedule</h1>
         <form action="{% url 'create_slot' %}"
             enctype="multipart/form-data"
